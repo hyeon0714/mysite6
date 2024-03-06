@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="board">
+	<parameterMap type="com.javaex.vo.BoardVo" id="pMap">
+		<parameter property="no"/>
+		<parameter property="title"/>
+		<parameter property="content"/>
+		<parameter property="hit"/>
+		<parameter property="date"/>
+		<parameter property="userNo"/>
+		<parameter property="name"/>
+	</parameterMap>
+	
+	<resultMap type="com.javaex.vo.BoardVo" id="rMap">
+		<result column="no" property="no"/>
+		<result column="title" property="title"/>
+		<result column="content" property="content"/>
+		<result column="hit" property="hit"/>
+		<result column="reg_date" property="date"/>
+		<result column="user_no" property="userNo"/>
+		<result column="name" property="name"/>
+	</resultMap>
+
+	<!-- 리스트 -->
+	<select id="list" resultMap="rMap">
+		select	board.no,
+				title,
+		        hit,
+		        reg_date,
+		        name
+		from board, users
+		where board.user_no = users.no
+		order by no desc	
+	</select>
+	
+	<!-- 읽기(조회수 가져오기) -->
+	<select id="hit" parameterType="int" resultMap="rMap">
+		select	hit
+		from board
+		where no = #{no}
+	</select>
+	
+	<!-- 읽기(조회수 올리기) -->
+	<update id="upHit" parameterMap="pMap">
+		update	board
+		set hit = #{hit}
+		where no = #{no}
+	</update>
+	
+	<!-- 읽기(읽기) -->
+	<select id="read" parameterType="int" resultMap="rMap">
+		select	title,
+				content,
+		        hit,
+		        reg_date,
+		        name
+		from board, users
+		where board.user_no = users.no
+		and board.no=#{no}
+	</select>
+	
+	<!-- 수정 -->
+	<update id="modify" parameterMap="pMap">
+		update	board
+		set title = #{title},
+			content = #{content}
+		where no = #{no}
+	</update>
+	
+	<!-- 쓰기 -->
+	<insert id="write" parameterMap="pMap">
+		insert into board
+		value(null, #{title}, #{content}, 0, date(now()), #{userNo})
+	</insert>
+</mapper>
