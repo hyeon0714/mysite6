@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.javaex.util.BoardUtil;
 import com.javaex.vo.BoardVo;
 
 @Repository
@@ -16,12 +17,20 @@ public class BoardDao {
 	private SqlSession sqlSession;
 	
 	
-	//리스트
-	public List<BoardVo> list() {
+	//리스트(5개만 가져오기)
+	public List<BoardVo> list(BoardUtil util) {
 		
-		List<BoardVo> board = sqlSession.selectList("board.list");
+		List<BoardVo> board = sqlSession.selectList("board.list", util);
 		
 		return board;
+	}
+	
+	//총 게시판수 가져오기
+	public int boardCount(BoardUtil util) {
+		
+		BoardUtil b = sqlSession.selectOne("board.count", util);
+		
+		return b.getTotalRecord();
 	}
 	
 	//읽기1번(조회수 가져오기)

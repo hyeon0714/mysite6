@@ -1,9 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
 
 <!DOCTYPE html>
 <html>
@@ -78,9 +76,9 @@
 
 				<div id="board">
 					<div id="list">
-						<form action="" method="get">
+						<form action="" method="">
 							<div class="form-group text-right">
-								<input type="text" name="keyword" value="${param.keyword }">
+								<input type="text">
 								<button type="submit" id=btn_search>검색</button>
 							</div>
 						</form>
@@ -90,23 +88,23 @@
 									<th>번호</th>
 									<th>제목</th>
 									<th>글쓴이</th>
-									<th>조회수</th>
+									<th>groupNo</th>
+									<th>orderNo</th>
+									<th>depth</th>
 									<th>작성일</th>
 									<th>관리</th>
 								</tr>
 							</thead>
-
-
 							<tbody>
-								<c:forEach items="${requestScope.map.vo }" var="board"
-									varStatus="status">
+								<c:forEach items="${requestScope.rList }" var="rList" >
 									<tr>
-										<td>${board.no }</td>
-										<td class="text-left"><a
-											href="${pageContext.request.contextPath }/board/read?no=${board.no}">${board.title }</a></td>
-										<td>${board.name }</td>
-										<td>${board.hit }</td>
-										<td>${board.date }</td>
+										<td>${rList.no }</td>
+										<td class="text-left"><a href="#">${rList.title }</a></td>
+										<td>${rList.name }</td>
+										<td>rList.groupNo</td>
+										<td>${rList.orderNo }</td>
+										<td>${rList.depth}</td>
+										<td>${rList.date }</td>
 										<td><a href="">[삭제]</a></td>
 									</tr>
 								</c:forEach>
@@ -115,55 +113,25 @@
 
 						<div id="paging">
 							<ul>
-								<c:choose>
-									<c:when test="${param.page >= 2}">
-										<li><a
-											href="${pageContext.request.contextPath }/board/list?keyword=${param.keyword}&page=${param.page-1}">◀</a></li>
-									</c:when>
-									<c:when test="${param.page == 1 or param.page == null }">
-										<li><a href="">◀</a></li>
-									</c:when>
-								</c:choose>
-
-								<c:forEach items="${requestScope.map.pSize }" var="pSize"
-									varStatus="status">
-									<c:choose>
-										<c:when test="${param.page == status.count or param.page == null and status.count == 1}">
-											<li class="active"><a
-												href="${pageContext.request.contextPath }/board/list?keyword=${param.keyword}&page=${status.count}">${status.count }</a>
-										</c:when>
-										<c:when test="${param.page != status.count }">
-											<li><a
-												href="${pageContext.request.contextPath }/board/list?keyword=${param.keyword}&page=${status.count}">${status.count }</a>
-										</c:when>
-									</c:choose>
-								</c:forEach>
-
-								<c:choose>
-									<c:when test="${param.page == requestScope.map.util.pageSize }">
-										<li><a href="">▶</a></li>
-									</c:when>
-									<c:when
-										test="${param.page < requestScope.map.util.pageSize or param.page == null }">
-										<li><a
-											href="${pageContext.request.contextPath }/board/list?keyword=${param.keyword}&page=${param.page+1}">▶</a></li>
-									</c:when>
-								</c:choose>
+								<li><a href="">◀</a></li>
+								<li><a href="">1</a></li>
+								<li><a href="">2</a></li>
+								<li><a href="">3</a></li>
+								<li><a href="">4</a></li>
+								<li class="active"><a href="">5</a></li>
+								<li><a href="">6</a></li>
+								<li><a href="">7</a></li>
+								<li><a href="">8</a></li>
+								<li><a href="">9</a></li>
+								<li><a href="">10</a></li>
+								<li><a href="">▶</a></li>
 							</ul>
 
 
 							<div class="clear"></div>
 						</div>
-						<c:choose>
-							<c:when test="${sessionScope.user != null }">
-								<a id="btn_write"
-									href="${pageContext.request.contextPath }/board/writeform">글쓰기</a>
-							</c:when>
-							<c:when test="${sessionScope.user == null }">
-								<a id="btn_write"
-									href="${pageContext.request.contextPath }/user/loginform">글쓰기</a>
-							</c:when>
-						</c:choose>
+						<a id="btn_write" href="${pageContext.request.contextPath }/rboard/writeform">글쓰기</a>
+
 					</div>
 					<!-- //list -->
 				</div>

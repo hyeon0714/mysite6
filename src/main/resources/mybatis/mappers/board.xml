@@ -22,16 +22,29 @@
 		<result column="name" property="name"/>
 	</resultMap>
 
-	<!-- 리스트 -->
-	<select id="list" resultMap="rMap">
-		select	board.no,
-				title,
-		        hit,
-		        reg_date,
-		        name
-		from board, users
-		where board.user_no = users.no
-		order by no desc	
+	<!-- 리스트 5개 가져오기(검색포함) -->
+	<select id="list" parameterType="com.javaex.util.BoardUtil" resultMap="rMap">
+			select	board.no,
+					title,
+			        hit,
+			        reg_date,
+			        name
+			from board, users
+			where board.user_no = users.no
+			<if test="#{keyword} != null ">
+				and title like concat('%', #{keyword}, '%')
+			</if> 
+			order by no desc
+			limit #{recordSize} offset #{page}
+	</select>
+	
+	<!-- 게시물 총 개수가져오기 -->
+	<select id="count" parameterType="com.javaex.util.BoardUtil" resultType="com.javaex.util.BoardUtil">
+		select	count(no) totalRecord
+		from board
+			<if test="#{keyword} != null ">
+				where title like concat('%', #{keyword}, '%')
+			</if> 
 	</select>
 	
 	<!-- 읽기(조회수 가져오기) -->

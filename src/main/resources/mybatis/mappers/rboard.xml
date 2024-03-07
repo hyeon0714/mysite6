@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="rboard">
+
+	<resultMap type="com.javaex.vo.RboardVo" id="resul">
+		<result column="no" property="no" />
+		<result column="user_no" property="userNo" />
+		<result column="title" property="title" />
+		<result column="reg_date" property="date" />
+		<result column="gruop_no" property="groupNo" />
+		<result column="order_no" property="orderNo" />
+		<result column="depth" property="depth" />
+	</resultMap>
+
+	<select id="list" resultMap="resul">
+		select 	rboard.no,
+		        title,
+		        group_no,
+		        order_no,
+		        depth,
+		        reg_date,
+		        name
+		from rboard, users
+		where rboard.user_no = users.no
+		order by group_no DESC, order_no ASC;
+	</select>
+	
+	<insert id="write" parameterType="com.javaex.vo.RboardVo">
+		insert into rboard(no, title, user_no, reg_date, depth, order_no, group_no)
+		values(null, #{title}, #{userNo}, now(), 0, 1, (select @@identity+1));
+	</insert>
+</mapper>

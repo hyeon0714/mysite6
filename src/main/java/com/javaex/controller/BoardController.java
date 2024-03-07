@@ -1,6 +1,6 @@
 package com.javaex.controller;
 
-import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.javaex.service.BoardService;
+import com.javaex.util.BoardUtil;
 import com.javaex.vo.BoardVo;
 
 @Controller
@@ -21,11 +22,11 @@ public class BoardController {
 	
 	//리스트
 	@RequestMapping("/list")
-	public String list(Model model) {
+	public String list(@ModelAttribute BoardUtil util, Model model) {
 		
-		List<BoardVo> board = bs.exeList();
+		Map<String, Object> map = bs.exeList(util);
 		
-		model.addAttribute("board", board);
+		model.addAttribute("map", map);
 		
 		return "board/list";
 	}
