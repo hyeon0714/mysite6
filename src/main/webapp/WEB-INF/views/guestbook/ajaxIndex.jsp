@@ -326,21 +326,26 @@
 		}
 		
 		function modalDelete(deleteNo) {
-			let list = document.querySelector("#na");
-			console.log(list.textContent);
+			let list = document.querySelectorAll("#na");
 			
-			let no = list.textContent;
+			let a = document.querySelectorAll(".guestRead");
 			
-			let a = document.querySelector(".guestRead");
-			
-			console.log(a);
-			
-			if(deleteNo == no){
-				a.remove();
-			}else{
+			for(let i = 0; i<list.length; i++){
 				
+				console.log(list[i].textContent);
+				
+				let no = list[i].textContent;
+				
+				
+				
+				console.log(a[i]);
+				
+				if(deleteNo == no){
+					a[i].remove();
+				}else{
+					
+				}
 			}
-			
 		}
 		
 		
