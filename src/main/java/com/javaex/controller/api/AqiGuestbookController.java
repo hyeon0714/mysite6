@@ -26,18 +26,22 @@ public class AqiGuestbookController {
 		
 		List<GuestbookVo> gVo = gs.exeList();
 		
-		System.out.println(gVo);
-		
 		return gVo;
 	}
 	
 	//등록
 	@ResponseBody
 	@RequestMapping(value = "/guestbooks", method = RequestMethod.POST)
-	public void add(@ModelAttribute GuestbookVo guestVo) {//Vo의 생성자를 이용해서 자바로 받아온다
-		System.out.println(guestVo);
+	public GuestbookVo add(@ModelAttribute GuestbookVo guestVo) {//Vo의 생성자를 이용해서 자바로 받아온다	
 		
-		gs.exeAdd(guestVo);
+		return gs.exeAddandGuest(guestVo); 
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/guestbooks", method = RequestMethod.DELETE)
+	public GuestbookVo modalDelete(@ModelAttribute GuestbookVo guestVo) {
+		
+		return gs.exeModalDelete(guestVo);
 	}
 	
 }

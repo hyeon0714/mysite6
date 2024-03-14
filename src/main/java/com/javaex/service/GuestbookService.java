@@ -34,4 +34,30 @@ public class GuestbookService {
 		
 		gd.delete(gv);
 	}
+	
+	
+	//ajax 등록
+	public GuestbookVo exeAddandGuest(GuestbookVo gv) {
+		
+		//등록
+		gd.addAndGuest(gv);
+		
+		//가져오기
+		return gd.addAndGuestSelect(gv);
+		
+	}
+	
+	//ajax삭제
+	public GuestbookVo exeModalDelete(GuestbookVo guestVo) {
+		
+		int count = gd.modalDelete(guestVo);
+		
+		if(count == 1) {
+			return guestVo;
+		}else {
+			guestVo.setNo(0);
+			
+			return guestVo;
+		}
+	}
 }
