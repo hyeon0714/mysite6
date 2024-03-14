@@ -71,7 +71,7 @@
 											rows="5"></textarea></td>
 								</tr>
 								<tr class="button-area">
-									<td colspan="4" class="text-center"><button type="submit">등록</button></td>
+									<td colspan="4" class="text-center"><button id="btnAdd" type="submit">등록</button></td>
 								</tr>
 							</tbody>
 
@@ -126,7 +126,6 @@
 		
 		//리스트 요청(데이터만)
 		
-		
 		axios({			//axios 사용
 			method: 'get', // put, post, delete 
 			url: '${pageContext.request.contextPath }/api/guestbooks',
@@ -138,7 +137,6 @@
 		.then(function (response) {
 			console.log(response); //수신데이타
 			
-			
 			//리스트 자리에 글을 추가
 			for(let i = 0; i<response.data.length; i++){
 				let guestVo = response.data[i]
@@ -149,6 +147,52 @@
 		})
 		.catch(function (error) {
 			console.log(error);
+		});
+		
+
+		
+		//등록 요청
+		
+		let btnAdd = document.querySelector("#btnAdd");
+		btnAdd.addEventListener("click", function(){
+			event.preventDefault();
+			console.log("글쓰기");
+			
+			let name = document.querySelector("[name='name']").value;
+			let password = document.querySelector("[name='password']").value;
+			let content = document.querySelector("[name='content']").value;
+			
+			let guestVo = {
+					name: name,
+					password: password,
+					content: content
+			}
+			
+			console.log(guestVo);
+			
+			axios({			//axios 사용
+				method: 'post', // put, post, delete ->포스트는 저장
+				url: '${pageContext.request.contextPath }/api/guestbooks',
+				headers: {"Content-Type" : "application/json; charset=utf-8"}, //전송타입
+				params: guestVo, //get방식 파라미터로 값이 전달
+				//data: guestbookVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
+				responseType: 'json' //수신타입
+			})
+			.then(function (response) {
+				console.log(response); //수신데이타
+				
+				//리스트 자리에 글을 추가
+				for(let i = 0; i<response.data.length; i++){
+					let guestVo = response.data[i]
+					render(guestVo);	//1개의 글을 렌더에 전달  --> 렌더는 리스트 위치에 그린다
+				}
+				
+				
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+			
 		});
 		
 		//함수
