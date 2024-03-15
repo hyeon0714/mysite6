@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -32,16 +34,34 @@ public class AqiGuestbookController {
 	//등록
 	@ResponseBody
 	@RequestMapping(value = "/guestbooks", method = RequestMethod.POST)
-	public GuestbookVo add(@ModelAttribute GuestbookVo guestVo) {//Vo의 생성자를 이용해서 자바로 받아온다	
+	public GuestbookVo add(@RequestBody GuestbookVo guestVo) {//Vo의 생성자를 이용해서 자바로 받아온다	
+		
+		System.out.println(guestVo);
 		
 		return gs.exeAddandGuest(guestVo); 
 	}
 	
+	//삭제
 	@ResponseBody
 	@RequestMapping(value = "/guestbooks", method = RequestMethod.DELETE)
 	public GuestbookVo modalDelete(@ModelAttribute GuestbookVo guestVo) {
 		
 		return gs.exeModalDelete(guestVo);
+	}
+	
+	//삭제2
+	@ResponseBody
+	@RequestMapping(value = "/guestbooks/{no}", method = RequestMethod.DELETE)//주소의 특정 이름없이 값을 바로꺼낼수 있다
+	public GuestbookVo modalDelete2(@PathVariable("no") int no, @ModelAttribute GuestbookVo guestVo) {
+
+		guestVo.setNo(no);
+		
+		
+		GuestbookVo gVo =  gs.exeModalDelete(guestVo);
+		
+		System.out.println(gVo);
+		
+		return gVo;
 	}
 	
 }

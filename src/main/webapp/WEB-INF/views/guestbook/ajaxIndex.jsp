@@ -19,12 +19,39 @@
 
 <style>
 	.modal{
-		display: none;
+		width: 100%; /* 가로전체 */
+		height: 100%; /* 세로전체 */
+		display: none; /* 시작할때 숨김처리 */
+		position: fixed; /* 화면에 고정 */
+		left: 0; /* 왼쪽에서 0에서 시작 */  
+		top: 0;  /* 위쪽에서 0에서 시작 */
+		z-index: 999;  /* 제일위에 */
+		overflow: auto; /* 내용이 많으면 스크롤 생김 */
+		background-color: rgba(0,0,0,0.4); /* 배경이 검정색에 반투명 */  
+		
+		
+		
 	}
 	.modal .modal-content{
 		width: 800px;
+		margin: 100px auto;
+		padding: 0px 20px 20px 20px;
 		border: 1px solid #000000;
+		background-color: #ffffff;
+		
 	}
+	
+		/* 닫기버튼 */
+	.modal .modal-content .closeBtn{
+		margin-left: 783px;
+		text-align: right;
+		width: 15px;
+		color: #aaaaaa;
+		font-size: 28px;
+		font-weight: bold;
+		cursor: pointer;
+	}
+	
 </style>
 </head>
 
@@ -91,7 +118,7 @@
 					<!-- 모달 창 컨텐츠 -->
 	               <div id="myModal" class="modal">
 	                  <div id="guestbook" class="modal-content">
-	                     <div class="closeBtn">×</div>
+	                     <div class="closeBtn" name="close">×</div>
 	                     <div class="m-header">
 	                        패스워드를 입력하세요
 	                     </div>
@@ -150,37 +177,62 @@
 
 	document.addEventListener("DOMContentLoaded", function(){
 		
-		//리스트 요청(데이터만)
+		//리스트 불러와서 그리기
+		getListAndRender();
 		
-		axios({			//axios 사용
-			method: 'get', // put, post, delete 
-			url: '${pageContext.request.contextPath }/api/guestbooks',
-			headers: {"Content-Type" : "application/json; charset=utf-8"}, //전송타입
-			//params: guestbookVo, //get방식 파라미터로 값이 전달
-			//data: guestbookVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
-			responseType: 'json' //수신타입
-		})
-		.then(function (response) {
-			console.log(response); //수신데이타
-			
-			//리스트 자리에 글을 추가
-			for(let i = 0; i<response.data.length; i++){
-				let guestVo = response.data[i]
-				render(guestVo, "down");	//1개의 글을 렌더에 전달  --> 렌더는 리스트 위치에 그린다
-			}
-			
-			
-		})
-		.catch(function (error) {
-			console.log(error);
-		});
-		
-
 		
 		//등록 요청
-		
 		let btnAdd = document.querySelector("#btnAdd");
-		btnAdd.addEventListener("click", function(){
+		btnAdd.addEventListener("click", addAndRender);
+			
+		
+		//모달을 이용해서 삭제 기능(삭제폼)
+		let modal = document.querySelector("#list");
+		modal.addEventListener("click", callModal);
+		
+		
+		//모달을 이용해서 삭제 기능(삭제)
+		let btnDelete = document.querySelector(".btnDelete");
+		btnDelete.addEventListener("click", callDelete);
+			
+
+		//모달창 끄기
+		let btnClose = document.querySelector(".closeBtn");
+		btnClose.addEventListener("click", cancleModal);
+			
+	});
+		
+		
+		
+		////////함수
+		function getListAndRender() {
+			//리스트 요청(데이터만)
+			axios({			//axios 사용
+				method: 'get', // put, post, delete 
+				url: '${pageContext.request.contextPath }/api/guestbooks',
+				headers: {"Content-Type" : "application/json; charset=utf-8"}, //전송타입
+				//params: guestbookVo, //get방식 파라미터로 값이 전달
+				//data: guestbookVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
+				responseType: 'json' //수신타입
+			})
+			.then(function (response) {
+				console.log(response); //수신데이타
+				
+				//리스트 자리에 글을 추가
+				for(let i = 0; i<response.data.length; i++){
+					let guestVo = response.data[i]
+					render(guestVo, "down");	//1개의 글을 렌더에 전달  --> 렌더는 리스트 위치에 그린다
+				}
+				
+				
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+		};
+		
+		//글추가 후 그리기
+		function addAndRender() {
 			event.preventDefault();
 			console.log("글쓰기");
 			
@@ -198,8 +250,8 @@
 				method: 'post', // put, post, delete ->포스트는 저장
 				url: '${pageContext.request.contextPath }/api/guestbooks',
 				headers: {"Content-Type" : "application/json; charset=utf-8"}, //전송타입
-				params: guestVo, //get방식 파라미터로 값이 전달
-				//data: guestbookVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
+				//params: guestVo, //get방식 파라미터로 값이 전달
+				data: guestVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
 				responseType: 'json' //수신타입
 			})
 			.then(function (response) {
@@ -214,80 +266,8 @@
 			.catch(function (error) {
 				console.log(error);
 			});
-			
-			
-			
-		});
+		};
 		
-		//모달을 이용해서 삭제 기능(삭제폼)
-		let modal = document.querySelector("#list");
-		
-		modal.addEventListener("click", function(event) {
-			console.log(event.target);
-						
-			if(event.target.tagName == "BUTTON"){
-				console.log("버튼");
-				
-				let modal = document.querySelector(".modal");
-				modal.style.display = "block";
-				
-				let no = document.querySelector("[name=no]");
-				
-				console.log(no);
-				
-				no.value = event.target.dataset.no
-				
-			}
-		});
-		
-		//모달을 이용해서 삭제 기능(삭제)
-		let btnDelete = document.querySelector(".btnDelete");
-		
-		btnDelete.addEventListener("click", function() {
-			
-			event.preventDefault();
-			
-			console.log(btnDelete);
-			
-			let no = document.querySelector("[name=no]").value;
-			let password = document.querySelector("[name=pw]").value;
-			
-			console.log(no);
-			console.log(password);
-			
-			let guestVo = {
-				no: no,
-				password: password
-			}
-			
-			console.log(guestVo);
-			
-			axios({			//axios 사용
-				method: 'delete', // put, post, delete ->포스트는 저장
-				url: '${pageContext.request.contextPath }/api/guestbooks',
-				headers: {"Content-Type" : "application/json; charset=utf-8"}, //전송타입
-				params: guestVo, //get방식 파라미터로 값이 전달
-				//data: guestbookVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
-				responseType: 'json' //수신타입
-			})
-			.then(function (response) {
-				console.log(response); //수신데이타
-				
-				let deleteNo = response.data.no
-				
-				modalDelete(deleteNo);
-			})
-			.catch(function (error) {
-				console.log(error);
-			});
-			
-		});
-		
-		
-		
-		
-		
-		//함수
 		function render(guestVo, dir){
 			
 			let no = guestVo.no
@@ -323,7 +303,86 @@
 				list.insertAdjacentHTML("afterbegin", str);
 			}
 			
-		}
+		};
+		
+		//모달창 켜기
+		function callModal() {
+			console.log(event.target);
+			
+			if(event.target.tagName == "BUTTON"){
+								
+				let modal2 = document.querySelector(".modal");
+				modal2.style.display = "block";
+				
+				let no = document.querySelector("[name=no]");
+				
+				console.log(no);
+				
+				no.value = event.target.dataset.no
+		}};
+		
+		//삭제버튼 활성화
+		function callDelete() {
+			event.preventDefault();
+			
+			console.log(btnDelete);
+			
+			let no = document.querySelector("[name=no]").value;
+			let password = document.querySelector("[name=pw]").value;
+			
+			console.log(no);
+			console.log(password);
+			
+			let guestVo = {
+				no: no,
+				password: password
+			}
+			
+			console.log(guestVo);
+			
+			axios({			//axios 사용
+				method: 'delete', // put, post, delete ->포스트는 저장
+				url: '${pageContext.request.contextPath }/api/guestbooks/'+no+'',		//--> 삭제2 기능 사용
+				headers: {"Content-Type" : "application/json; charset=utf-8"}, //전송타입
+				params: guestVo, //get방식 파라미터로 값이 전달
+				//data: guestbookVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
+				responseType: 'json' //수신타입
+			})
+			.then(function (response) {
+				console.log(response); //수신데이타
+				
+				let deleteNo = response.data.no
+				
+				console.log(deleteNo);
+				
+				modalDelete(deleteNo);
+				
+				//삭제후 모달창숨기기
+				let modal2 = document.querySelector(".modal");
+				modal2.style.display = "none";
+				
+				console.log(password);
+				
+				//삭제후 비밀번호 지우기
+				document.querySelector("[name=pw]").value = "";
+				
+				console.log(password);
+				
+				//반복문 실행말고 na와 list 아이디에 no를 부여해서 가져온 no와 같은 na의 list를 제거하는방법도 있다
+			})
+			.catch(function (error) {
+				console.log(error);
+			})
+		};
+		
+		//모달창 끄기
+		function cancleModal() {
+			//삭제후 모달창숨기기
+			let modal2 = document.querySelector(".modal");
+			modal2.style.display = "none";
+			
+			document.querySelector("[name=pw]").value = "";
+		};
 		
 		function modalDelete(deleteNo) {
 			let list = document.querySelectorAll("#na");
@@ -331,14 +390,8 @@
 			let a = document.querySelectorAll(".guestRead");
 			
 			for(let i = 0; i<list.length; i++){
-				
-				console.log(list[i].textContent);
-				
+								
 				let no = list[i].textContent;
-				
-				
-				
-				console.log(a[i]);
 				
 				if(deleteNo == no){
 					a[i].remove();
@@ -346,12 +399,12 @@
 					
 				}
 			}
-		}
+		};
 		
 		
 		
 		
-	});
+	
 </script>
 
 
