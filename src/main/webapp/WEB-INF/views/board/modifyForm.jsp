@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 
 
 
@@ -8,8 +8,10 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link href="${pageContext.request.contextPath }/assets/css/mysite.css" rel="stylesheet" type="text/css">
-<link href="${pageContext.request.contextPath }/assets/css/board.css" rel="stylesheet" type="text/css">
+<link href="${pageContext.request.contextPath }/assets/css/mysite.css"
+	rel="stylesheet" type="text/css">
+<link href="${pageContext.request.contextPath }/assets/css/board.css"
+	rel="stylesheet" type="text/css">
 
 </head>
 
@@ -17,34 +19,7 @@
 <body>
 	<div id="wrap">
 
-		<div id="header" class="clearfix">
-			<h1>
-				<a href="">MySite</a>
-			</h1>
-
-			<!-- 
-			<ul>
-				<li>황일영 님 안녕하세요^^</li>
-				<li><a href="" class="btn_s">로그아웃</a></li>
-				<li><a href="" class="btn_s">회원정보수정</a></li>
-			</ul>
-			-->	
-			<ul>
-				<li><a href="" class="btn_s">로그인</a></li>
-				<li><a href="" class="btn_s">회원가입</a></li>
-			</ul>
-			
-		</div>
-		<!-- //header -->
-
-		<div id="nav">
-			<ul class="clearfix">
-				<li><a href="">입사지원서</a></li>
-				<li><a href="">게시판</a></li>
-				<li><a href="">갤러리</a></li>
-				<li><a href="">방명록</a></li>
-			</ul>
-		</div>
+		<c:import url="/WEB-INF/views/include/header.jsp"></c:import>
 		<!-- //nav -->
 
 		<div id="container" class="clearfix">
@@ -71,43 +46,42 @@
 					<div class="clear"></div>
 				</div>
 				<!-- //content-head -->
-	
+
 				<div id="board">
 					<div id="modifyForm">
-						<form action="${pageContext.request.contextPath }/board/modify" method="get">
+						<form action="${pageContext.request.contextPath }/board/modify"
+							method="get">
 							<!-- 작성자 -->
 							<div class="form-group">
-								<span class="form-text">작성자</span>
-								<span class="form-value">${requestScope.boardOne.name }</span>
+								<span class="form-text">작성자</span> <span class="form-value">${requestScope.boardOne.name }</span>
 							</div>
-							
+
 							<!-- 조회수 -->
 							<div class="form-group">
-								<span class="form-text">조회수</span>
-								<span class="form-value">${requestScope.boardOne.hit }</span>
+								<span class="form-text">조회수</span> <span class="form-value">${requestScope.boardOne.hit }</span>
 							</div>
-							
+
 							<!-- 작성일 -->
 							<div class="form-group">
-								<span class="form-text">작성일</span>
-								<span class="form-value">${requestScope.boardOne.date }</span>
+								<span class="form-text">작성일</span> <span class="form-value">${requestScope.boardOne.date }</span>
 							</div>
-							
+
 							<!-- 제목 -->
 							<div class="form-group">
-								<label class="form-text" for="txt-title">제목</label>
-								<input type="text" id="txt-title" name="title" value=${requestScope.boardOne.title }>
+								<label class="form-text" for="txt-title">제목</label> <input
+									type="text" id="txt-title" name="title"
+									value=${requestScope.boardOne.title }>
 							</div>
-						
-							
-						
+
+
+
 							<!-- 내용 -->
 							<div class="form-group">
 								<textarea id="txt-content" name="content">${requestScope.boardOne.content }</textarea>
 							</div>
-							
+
 							<a id="btn_cancel" href="">취소</a>
-							<button id="btn_modify" type="submit" >수정</button>
+							<button id="btn_modify" type="submit">수정</button>
 							<input type="hidden" name="no" value="${param.no }">
 						</form>
 						<!-- //form -->
@@ -122,9 +96,7 @@
 		<!-- //container  -->
 
 
-		<div id="footer">
-			Copyright ⓒ 2020 황일영. All right reserved
-		</div>
+		<div id="footer">Copyright ⓒ 2020 황일영. All right reserved</div>
 		<!-- //footer -->
 	</div>
 	<!-- //wrap -->

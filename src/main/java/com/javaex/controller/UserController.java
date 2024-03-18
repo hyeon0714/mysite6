@@ -32,7 +32,7 @@ public class UserController {
 		
 		UserVo user = us.exeLogin(uv);
 		
-		session.setAttribute("user", user);
+		session.setAttribute("userVo", user);
 		
 		return "redirect:/main";
 	}
