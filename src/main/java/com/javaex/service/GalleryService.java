@@ -65,4 +65,9 @@ public class GalleryService {
 		
 		gd.add(gv);
 	}
+	
+	public void exeDelete(GalleryVo gv) {
+		
+		gd.delete(gv);
+	}
 }

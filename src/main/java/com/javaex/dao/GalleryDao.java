@@ -25,4 +25,9 @@ public class GalleryDao {
 		
 		sqlSession.insert("gallery.insert", gv);
 	}
+	
+	public void delete(GalleryVo gv) {
+		
+		sqlSession.delete("gallery.delete", gv);
+	}
 }

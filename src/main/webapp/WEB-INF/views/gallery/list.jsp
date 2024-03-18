@@ -15,65 +15,69 @@
 	rel="stylesheet" type="text/css">
 
 <style>
-	#addModal{
-		width: 100%; /* 가로전체 */
-		height: 100%; /* 세로전체 */
-		display: none; /* 시작할때 숨김처리 */
-		position: fixed; /* 화면에 고정 */
-		left: 0; /* 왼쪽에서 0에서 시작 */  
-		top: 0;  /* 위쪽에서 0에서 시작 */
-		z-index: 999;  /* 제일위에 */
-		overflow: auto; /* 내용이 많으면 스크롤 생김 */
-		background-color: rgba(0,0,0,0.4); /* 배경이 검정색에 반투명 */  
-	}
-	
-	#addModal .modal-content{
-		width: 800px;
-		margin: 100px auto;
-		padding: 0px 20px 20px 20px;
-		border: 1px solid #000000;
-		background-color: #ffffff;
-	}
-	
-	#addModal .modal-content .closeBtn{
-		margin-left: 783px;
-		text-align: right;
-		width: 15px;
-		color: #aaaaaa;
-		font-size: 28px;
-		font-weight: bold;
-		cursor: pointer;
-	}
-	
-	#viewModal{
-		width: 100%; /* 가로전체 */
-		height: 100%; /* 세로전체 */
-		display: none; /* 시작할때 숨김처리 */
-		position: fixed; /* 화면에 고정 */
-		left: 0; /* 왼쪽에서 0에서 시작 */  
-		top: 0;  /* 위쪽에서 0에서 시작 */
-		z-index: 999;  /* 제일위에 */
-		overflow: auto; /* 내용이 많으면 스크롤 생김 */
-		background-color: rgba(0,0,0,0.4); /* 배경이 검정색에 반투명 */  
-	}
-	
-	#viewModal .modal-content{
-		width: 800px;
-		margin: 100px auto;
-		padding: 0px 20px 20px 20px;
-		border: 1px solid #000000;
-		background-color: #ffffff;
-	}
-	
-	#viewModal .modal-content .closeBtn{
-		margin-left: 783px;
-		text-align: right;
-		width: 15px;
-		color: #aaaaaa;
-		font-size: 28px;
-		font-weight: bold;
-		cursor: pointer;
-	}
+#addModal {
+	width: 100%; /* 가로전체 */
+	height: 100%; /* 세로전체 */
+	display: none; /* 시작할때 숨김처리 */
+	position: fixed; /* 화면에 고정 */
+	left: 0; /* 왼쪽에서 0에서 시작 */
+	top: 0; /* 위쪽에서 0에서 시작 */
+	z-index: 999; /* 제일위에 */
+	overflow: auto; /* 내용이 많으면 스크롤 생김 */
+	background-color: rgba(0, 0, 0, 0.4); /* 배경이 검정색에 반투명 */
+}
+
+#addModal .modal-content {
+	width: 800px;
+	margin: 100px auto;
+	padding: 0px 20px 20px 20px;
+	border: 1px solid #000000;
+	background-color: #ffffff;
+}
+
+#addModal .modal-content .closeBtn {
+	margin-left: 783px;
+	text-align: right;
+	width: 15px;
+	color: #aaaaaa;
+	font-size: 28px;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+#viewModal {
+	width: 100%; /* 가로전체 */
+	height: 100%; /* 세로전체 */
+	display: none; /* 시작할때 숨김처리 */
+	position: fixed; /* 화면에 고정 */
+	left: 0; /* 왼쪽에서 0에서 시작 */
+	top: 0; /* 위쪽에서 0에서 시작 */
+	z-index: 999; /* 제일위에 */
+	overflow: auto; /* 내용이 많으면 스크롤 생김 */
+	background-color: rgba(0, 0, 0, 0.4); /* 배경이 검정색에 반투명 */
+}
+
+#viewModal .modal-content {
+	width: 800px;
+	margin: 100px auto;
+	padding: 0px 20px 20px 20px;
+	border: 1px solid #000000;
+	background-color: #ffffff;
+}
+
+#viewModal .modal-content .closeBtn {
+	margin-left: 783px;
+	text-align: right;
+	width: 15px;
+	color: #aaaaaa;
+	font-size: 28px;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+#viewModal .modal-content .delete{
+	display: none;
+}
 </style>
 
 </head>
@@ -120,7 +124,7 @@
 								<div class="clear"></div>
 							</c:when>
 							<c:when test="${sessionScope.userVo == null }">
-								
+
 							</c:when>
 						</c:choose>
 
@@ -129,17 +133,17 @@
 
 							<!-- 이미지반복영역 -->
 							<c:forEach items="${requestScope.gList }" var="gList">
-							<li>
-								<input id="usNo" value=${gList.userNo } >
-								<div class="view">
-									<img class="imgItem" src="${pageContext.request.contextPath }/upload/${gList.saveName}">
-									<div class="imgWriter"	>
-										작성자: <strong>${gList.name }</strong>
+								<li>
+
+									<div class="view">
+										<img class="imgItem" id="t-${gList.no }"
+											src="${pageContext.request.contextPath }/upload/${gList.saveName}" data-user=${gList.userNo } data-no=${gList.no } }>
+										<div class="imgWriter">
+											작성자: <strong>${gList.name }</strong>
+										</div>
+
 									</div>
-									
-								</div>
-							</li>
-							
+								</li>
 							</c:forEach>
 							<!-- 이미지반복영역 -->
 
@@ -154,7 +158,7 @@
 		</div>
 		<!-- //container  -->
 
-
+		<input type="hidden" id="session" value="${sessionScope.userVo.no}">
 		<c:import url="/WEB-INF/views/include/footer.jsp"></c:import>
 		<!-- //footer -->
 
@@ -164,7 +168,8 @@
 	<!-- 이미지등록 팝업(모달)창 -->
 	<div id="addModal" class="modal">
 		<div class="modal-content">
-			<form action="${pageContext.request.contextPath }/gallery/add" method="post" enctype="multipart/form-data">
+			<form action="${pageContext.request.contextPath }/gallery/add"
+				method="post" enctype="multipart/form-data">
 				<div class="closeBtn">×</div>
 				<div class="m-header">간단한 타이틀</div>
 				<div class="m-body">
@@ -177,7 +182,7 @@
 							type="file" name="file" value="">
 					</div>
 				</div>
-				<input type="text" name="userNo" value="${sessionScope.userVo.no }">
+				<input type="hidden" name="userNo" value="${sessionScope.userVo.no }">
 				<div class="m-footer">
 					<button type="submit">저장</button>
 				</div>
@@ -201,71 +206,159 @@
 				</div>
 			</div>
 			<div class="m-footer">
-				<button>삭제</button>
-			<input type="text" class="uNo" name="userNo" value="">
+				<button type="button" class="delete">삭제</button>
+				<input type="hidden" class="uNo" name="userNo" value="">
+				<input type="hidden" class="galleryNo" name="galleryNo" value="">
 			</div>
 		</div>
 	</div>
 </body>
-
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script type="text/javascript">
-	
 	document.addEventListener("DOMContentLoaded", function() {
 		
+		let list = document.querySelector(".imgItem");
+		console.log(list);
+
 		let modal = document.querySelector("#list");
 		modal.addEventListener("click", callModal);
-		
+
 		let view = document.querySelector("#viewArea");
 		view.addEventListener("click", callview);
 		
+		let addModal = document.querySelector("#addModal")
+		addModal.addEventListener("click", calladdModal);
+
 		let viewModal = document.querySelector("#viewModal")
 		viewModal.addEventListener("click", callviewModal);
+		
+		let del = document.querySelector(".delete");
+		del.addEventListener("click", dele);
+		
 	});
-	
+
+	//추가 모달 부르기
 	function callModal() {
 		//console.log(event.target.tagName)
+
+		if (event.target.tagName == "BUTTON") {
+			let addModal = document.querySelector("#addModal");
+
+			addModal.style.display = "block";
+
+		}
+	}
+	
+	//이미지 클릭시 모달 부르기
+	function callview() {
 		
-		if(event.target.tagName == "BUTTON"){
+		//삭제를 위한 no입력
+		let no = event.target.dataset.no;
+		console.log(no);
+		let galleryNo = document.querySelector(".galleryNo");
+		galleryNo.value = no;
+		
+		let del = document.querySelector(".delete");
+		
+		del.style.display = "none";
+		
+		let viewModal = document.querySelector("#viewModal");
+
+		viewModal.style.display = "block";
+
+		let viewImg = document.querySelector("#viewModelImg");
+
+		viewImg.src = event.target.src;
+		
+		let user = event.target.dataset.user;
+		
+		let uNo = document.querySelector(".uNo");
+		uNo.value = user;
+		
+		console.log(uNo.value);
+		
+		let session = document.querySelector("#session")
+		
+		console.log(session.value)
+		
+		if(${sessionScope.userVo.no != null} && session.value == uNo.value){
+			let del = document.querySelector(".delete");
+			del.style.display = "block";
+			
+		}else{
+			
+		}
+	}
+	
+	//
+	function calladdModal() {
+		if (event.target.className == "closeBtn") {
 			let addModal = document.querySelector("#addModal");
 			
-			addModal.style.display = "block";
-			
-			
-			
+			addModal.style.display = "none";
 		}
-	}
+	} 
 	
-	function callview(){
+	//이미지 모달 끄기 
+	function callviewModal() {
+		//console.log(event.target.className);
 		
-		let usNo = document.querySelector("#usNo");
-		console.log(usNo);
+		let gallery = document.querySelector(".galleryNo")
 		
-		if(event.target.tagName == "IMG"){
+		let galleryNo = gallery.value;
+
+		if (event.target.className == "closeBtn") {
 			let viewModal = document.querySelector("#viewModal");
-			
-			viewModal.style.display = "block";
-			
-			let viewImg = document.querySelector("#viewModelImg");
-			
-			viewImg.src = event.target.src;
 			
 			let uNo = document.querySelector(".uNo");
-			
-			
-			
-		}
-	}
-	
-	function callviewModal() {
-		console.log(event.target.className);
-		
-		if(event.target.className == "closeBtn"){
-			let viewModal = document.querySelector("#viewModal");
 			
 			viewModal.style.display = "none";
 		}
 	}
 	
+	function dele() {
+		console.log("dele")
+		
+		let non =  document.querySelector(".galleryNo");
+		
+		let no = non.value;
+		console.log(no);
+		
+		let galleryVo = {
+			no: no
+		}
+		
+		axios({
+			method: 'delete', // put, post, delete 
+			url: '${pageContext.request.contextPath}/api/gallery',
+			headers: {"Content-Type" : "application/json; charset=utf-8"}, //전송타입
+			//params: guestbookVo, //get방식 파라미터로 값이 전달
+			data: galleryVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
+			responseType: 'json' //수신타입
+			})
+			.then(function (response) {
+			console.log(response); //수신데이타
+			
+			let num = response.data.no;
+			console.log(num);
+			
+			let tagId = "#t-"+num;
+			
+			console.log(tagId);
+			
+			let removeImg = document.querySelector("tagId");
+			
+			console.log(ramoveImg);
+			
+			})
+			.catch(function (error) {
+			console.log(error);
+			}); 
+		
+		
+		let viewModal = document.querySelector("#viewModal");
+		viewModal.style.display = "none";
+	}
 	
 	
 </script>

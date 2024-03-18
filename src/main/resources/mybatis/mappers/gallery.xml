@@ -12,11 +12,17 @@
 		        fileSize,
 		        name
 		from gallery, users
-		where gallery.user_no = users.no;
+		where gallery.user_no = users.no
+		order by no desc;
 	</select>
 	
 	<insert id="insert" parameterType="com.javaex.vo.GalleryVo">
 		insert into gallery
 		values(null, #{userNo}, #{content}, #{filePath}, #{orgName}, #{saveName}, #{fileSize});
 	</insert>
+	
+	<delete id="delete" parameterType="com.javaex.vo.GalleryVo">
+		delete from gallery
+		where no = #{no};
+	</delete>
 </mapper>

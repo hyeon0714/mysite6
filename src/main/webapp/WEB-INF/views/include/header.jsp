@@ -12,8 +12,8 @@
 				<c:when test="${sessionScope.userVo != null }">
 					<ul>
 						<li>${sessionScope.userVo.name } 님 안녕하세요^^</li>
-						<li><a href="/mysite5/user/logout" class="btn_s">로그아웃</a></li>
-						<li><a href="/mysite5/user/modifyform" class="btn_s">회원정보수정</a></li>
+						<li><a href="${pageContext.request.contextPath }/user/logout" class="btn_s">로그아웃</a></li>
+						<li><a href="${pageContext.request.contextPath }/user/modifyform" class="btn_s">회원정보수정</a></li>
 					</ul>
 				</c:when>
 				<c:when test="${serssionScope.userVo == null }">
