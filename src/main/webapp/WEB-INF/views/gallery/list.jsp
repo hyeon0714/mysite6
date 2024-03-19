@@ -218,7 +218,7 @@
 	document.addEventListener("DOMContentLoaded", function() {
 		
 		let list = document.querySelector(".imgItem");
-		console.log(list);
+		console.log(list.dataset.no);
 
 		let modal = document.querySelector("#list");
 		modal.addEventListener("click", callModal);
@@ -275,12 +275,8 @@
 		let uNo = document.querySelector(".uNo");
 		uNo.value = user;
 		
-		console.log(uNo.value);
-		
 		let session = document.querySelector("#session")
-		
-		console.log(session.value)
-		
+				
 		if(${sessionScope.userVo.no != null} && session.value == uNo.value){
 			let del = document.querySelector(".delete");
 			del.style.display = "block";
@@ -321,12 +317,16 @@
 		
 		let non =  document.querySelector(".galleryNo");
 		
+		console.log(non);
+		
 		let no = non.value;
 		console.log(no);
 		
 		let galleryVo = {
 			no: no
 		}
+		
+		console.log(galleryVo);
 		
 		axios({
 			method: 'delete', // put, post, delete 
@@ -342,13 +342,17 @@
 			let num = response.data.no;
 			console.log(num);
 			
-			let tagId = "#t-"+num;
+			let tagId ="t-"+num;
 			
 			console.log(tagId);
 			
-			let removeImg = document.querySelector("tagId");
+			console.log(document.querySelector("#"+tagId).parentElement.parentElement)
 			
-			console.log(ramoveImg);
+			let removeImg = document.querySelector("#"+tagId)
+			
+			console.log(removeImg.parentElement.parentElement.parentElement);
+			
+			removeImg.parentElement.parentElement.remove();
 			
 			})
 			.catch(function (error) {
